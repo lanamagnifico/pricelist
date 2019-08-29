@@ -1,9 +1,9 @@
 package com.shestakova.pricelist.entity;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -13,14 +13,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
 @Entity
 @Table(name="price_reg")
@@ -43,7 +39,7 @@ public class PriceReg {
 	@OneToMany(fetch = FetchType.EAGER, 
 			   mappedBy="priceReg",
 			   cascade=CascadeType.ALL)
-	private List<PriceRegDetail> details;
+	private Set<PriceRegDetail> details;
 
 	public PriceReg() {
 		
@@ -65,17 +61,17 @@ public class PriceReg {
 		this.startDate = startDate;
 	}
 
-	public List<PriceRegDetail> getDetails() {
+	public Set<PriceRegDetail> getDetails() {
 		return details;
 	}
 
-	public void setDetails(List<PriceRegDetail> details) {
+	public void setDetails(Set<PriceRegDetail> details) {
 		this.details = details;
 	}
 
 	public void addItemAndPrice(PriceRegDetail tmpPriceRegDetail) {
 		if (details==null) {
-			details = new ArrayList<PriceRegDetail>();
+			details = new HashSet<PriceRegDetail>();
 		}	
 		details.add(tmpPriceRegDetail);
 		tmpPriceRegDetail.setPriceReg(this);

@@ -1,6 +1,6 @@
 package com.shestakova.pricelist.entity;
 
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,9 +11,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
 
 @Entity
@@ -30,12 +27,12 @@ public class PriceType {
 	@OneToMany(fetch = FetchType.LAZY,
 			mappedBy="priceType", 
 			cascade = CascadeType.ALL)
-	private List<PriceReg> regList;
+	private Set<PriceReg> regList;
 
 	@OneToMany(fetch = FetchType.LAZY,
 			mappedBy="priceType", 
 			cascade = CascadeType.ALL)
-	private List<ActualPrice> priceList;
+	private Set<ActualPrice> priceList;
 	
 	public PriceType() {
 
@@ -62,19 +59,19 @@ public class PriceType {
 		this.name = name;
 	}
 
-	public List<PriceReg> getRegList() {
+	public Set<PriceReg> getRegList() {
 		return regList;
 	}
 
-	public void setRegList(List<PriceReg> regList) {
+	public void setRegList(Set<PriceReg> regList) {
 		this.regList = regList;
 	}
 
-	public List<ActualPrice> getPriceList() {
+	public Set<ActualPrice> getPriceList() {
 		return priceList;
 	}
 
-	public void setPriceList(List<ActualPrice> priceList) {
+	public void setPriceList(Set<ActualPrice> priceList) {
 		this.priceList = priceList;
 	}
 

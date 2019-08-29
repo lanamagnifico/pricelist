@@ -16,6 +16,42 @@ CREATE TABLE `item` (
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
 --
+-- Table structure for table `category`
+--
+
+DROP TABLE IF EXISTS `category`;
+
+CREATE TABLE `category` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+
+--
+-- Table structure for table `item_category_rel`
+--
+
+DROP TABLE IF EXISTS `item_category_rel`;
+
+CREATE TABLE `item_category_rel` (
+  `item_id` int(11) NOT NULL,
+  `category_id` int(11) NOT NULL,
+  
+  PRIMARY KEY (`item_id`,`category_id`),
+  
+  KEY `FK_ITEM_idx` (`item_id`),
+  KEY `FK_CATEGORY_idx` (`category_id`),
+   
+  CONSTRAINT `FK_ITEM` FOREIGN KEY (`item_id`) 
+  REFERENCES `item` (`id`) 
+  ON DELETE NO ACTION ON UPDATE NO ACTION,
+  
+  CONSTRAINT `FK_CATEGORY` FOREIGN KEY (`category`) 
+  REFERENCES `category` (`id`) 
+  ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
 -- Table structure for table `pricetype`
 --
 
@@ -90,27 +126,5 @@ CREATE TABLE `price_reg_detail` (
 
   ON DELETE NO ACTION ON UPDATE NO ACTION
  ) ENGINE=InnoDB DEFAULT CHARSET=latin1; 
-----
----- Table structure for table `item_price_registration`
-----
---
---DROP TABLE IF EXISTS `item_price_registration`;
---
---CREATE TABLE `item_price_registration` (
---  `item_id` int(11) NOT NULL,
---  `price_registration_id` int(11) NOT NULL,
---  
---  PRIMARY KEY (`item_id`,`price_registration_id`),
---  
---  KEY `FK_ITEM_idx` (`item_id`),
---  
---  CONSTRAINT `FK_PRICE_REGISTRATION` FOREIGN KEY (`price_registration_id`) 
---  REFERENCES `price_registration` (`id`) 
---  ON DELETE NO ACTION ON UPDATE NO ACTION,
---  
---  CONSTRAINT `FK_ITEM_05` FOREIGN KEY (`item_id`) 
---  REFERENCES `item` (`id`) 
---  ON DELETE NO ACTION ON UPDATE NO ACTION
---) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 SET FOREIGN_KEY_CHECKS = 1;

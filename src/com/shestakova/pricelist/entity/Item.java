@@ -1,6 +1,8 @@
 package com.shestakova.pricelist.entity;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -13,7 +15,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -29,15 +30,18 @@ public class Item {
 			mappedBy="item",
 			cascade= {CascadeType.ALL})
 	private List<ActualPrice> actualPrices;
-	
-//	@ManyToMany(fetch = FetchType.LAZY,
-//			cascade = {CascadeType.ALL})
-//	@JoinTable(
-//			 name = "item_price_registration",
-//			 joinColumns=@JoinColumn(name="item_id"),
-//			 inverseJoinColumns=@JoinColumn(name="price_registration_id"))
-//	private List<PriceReg> priceRegistrationList;
-	
+
+	@ManyToMany(fetch = FetchType.LAZY,
+			cascade = {CascadeType.DETACH,
+					CascadeType.MERGE,
+					CascadeType.PERSIST,
+					CascadeType.REFRESH})
+	@JoinTable(
+			name = "item_category_rel",
+			joinColumns = @JoinColumn(name="item_id"),
+			inverseJoinColumns = @JoinColumn(name="category_id"))
+	private Set<ItemCategory> categories;
+
 	public Item() {
 
 	}
@@ -71,17 +75,15 @@ public class Item {
 		this.actualPrices = pricelist;
 	}
 
-//	public List<PriceReg> getPriceRegistrationList() {
-//		return priceRegistrationList;
-//	}
-//
-//	public void setPriceRegistrationList(List<PriceReg> priceRegistrationList) {
-//		this.priceRegistrationList = priceRegistrationList;
-//	}
+	public void addCategory(ItemCategory category) {
+		if (categories == null) {
+			categories = new HashSet<ItemCategory>();
+		}
+		categories.add(category);
+	}
 
 	@Override
 	public String toString() {
 		return "Item [id=" + id + ", name=" + name + "]";
 	}
-
 }

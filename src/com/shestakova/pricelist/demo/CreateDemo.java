@@ -10,6 +10,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
 import com.shestakova.pricelist.entity.Item;
+import com.shestakova.pricelist.entity.ItemCategory;
 import com.shestakova.pricelist.entity.PriceReg;
 import com.shestakova.pricelist.entity.PriceRegDetail;
 import com.shestakova.pricelist.entity.ActualPrice;
@@ -35,7 +36,21 @@ public class CreateDemo {
 		session.delete(tmpItem);
 		session.getTransaction().commit();
 	}
-
+	private static ItemCategory createCategory(String title, Item tmpItem) {
+		ItemCategory tmpCategory = new ItemCategory(title);
+		tmpCategory.addItem(tmpItem);
+		session = factory.getCurrentSession();
+		session.beginTransaction();
+		session.save(tmpCategory);
+		session.getTransaction().commit();	
+		return tmpCategory;
+	}
+	private static void deleteCategory(ItemCategory tmpCategory) {
+		session = factory.getCurrentSession();
+		session.beginTransaction();
+		session.delete(tmpCategory);
+		session.getTransaction().commit();
+	}
 	private static PriceType createPriceType(String title) {
 		PriceType tmpPriceType = new PriceType(title);
 		session = factory.getCurrentSession();
@@ -88,12 +103,6 @@ public class CreateDemo {
 		session.getTransaction().commit();
 		return tmpPriceReg;
 	}
-	private static void deletePriceRegDetail(PriceRegDetail tmpPriceRegDetail) {
-		session = factory.getCurrentSession();
-		session.beginTransaction();
-		session.delete(tmpPriceRegDetail);
-		session.getTransaction().commit();
-	}
 	private static void deletePriceReg(PriceReg tmpPriceReg) {
 		session = factory.getCurrentSession();
 		session.beginTransaction();
@@ -108,15 +117,16 @@ public class CreateDemo {
 				.addAnnotatedClass(ActualPrice.class)
 				.addAnnotatedClass(PriceReg.class)
 				.addAnnotatedClass(PriceRegDetail.class)
+				.addAnnotatedClass(ItemCategory.class)
 				.buildSessionFactory();
-		System.out.println("Factory created");
+		System.out.println("Factory created!");
 
 		try {
 			// CREATE 
 			Map<String,Object> mapObjects = createObjects();	
 			// DELETE 
 			deleteObjects(mapObjects);
-			System.out.println("Done!!!");
+			System.out.println("Done!");
 		} 
 		catch (Exception e) {
 			e.printStackTrace();
@@ -131,37 +141,44 @@ public class CreateDemo {
 		// Price registration
 		PriceReg tmpPriceReg = (PriceReg)mapObjects.get("PriceReg");
 		if (tmpPriceReg != null) {
-			System.out.println("Deleting the price registration ...");
+			System.out.println("\nDeleting the price registration ...");
 			deletePriceReg((PriceReg)mapObjects.get("PriceReg"));
 			System.out.println("Price registration was deleted succesfully");
 		}
 		// Actual prices
 		ActualPrice tmpActualPrice = (ActualPrice)mapObjects.get("ActualPrice");
 		if (tmpActualPrice != null) {
-			System.out.println("Deleting the actual price type ...");
+			System.out.println("\nDeleting the actual price type ...");
 			deleteActualPrice(tmpActualPrice);
 			System.out.println("Actual price was deleted succesfully");
 		}
 		// Price types
 		PriceType tmpPriceType = (PriceType)mapObjects.get("PriceType");
 		if (tmpPriceType != null) {
-			System.out.println("Deleting the price type ...");
+			System.out.println("\nDeleting the price type ...");
 			deletePriceType(tmpPriceType);	
 			System.out.println("Price type was deleted succesfully"); 
+		}
+		// Categories
+		ItemCategory tmpCategory = (ItemCategory)mapObjects.get("Category");
+		if (tmpCategory != null) {
+			System.out.println("\nDeleting the category ...");
+			deleteCategory(tmpCategory);
+			System.out.println("Category was deleted succesfully");
 		}
 		// Items
 		Item tmpItem = (Item)mapObjects.get("Item");
 		if (tmpItem != null) {
-		System.out.println("Deleting the item ...");
-		deleteItem(tmpItem);
-		System.out.println("Item was deleted succesfully");
+			System.out.println("\nDeleting the item ...");
+			deleteItem(tmpItem);
+			System.out.println("Item was deleted succesfully");
 		}
 	}
 
 	private static Map<String,Object> createObjects() throws Exception, ParseException {
 		Map<String,Object> tmpMapObjects = new HashMap<>();
 		// Items
-		System.out.println("Creating item ...");
+		System.out.println("\nCreating item ...");
 		Item tmpItem = createItem("Test item");
 		int tmpItemId = tmpItem.getId();
 		if (tmpItemId==0) {
@@ -170,8 +187,18 @@ public class CreateDemo {
 			tmpMapObjects.put("Item", tmpItem);
 			System.out.println("Item was created succesfully: " + tmpItem);
 		}	
+		// Categories
+		System.out.println("\nCreating category ...");
+		ItemCategory tmpCategory = createCategory("Test category",tmpItem);
+		int tmpCategoryId = tmpCategory.getId();
+		if (tmpCategoryId==0) {
+			throw new Exception("Category was not cteated!");
+		} else {
+			tmpMapObjects.put("Category", tmpCategory);
+			System.out.println("Category was created succesfully: " + tmpCategory);
+		}	
 		// Price types
-		System.out.println("Creating price type ...");
+		System.out.println("\nCreating price type ...");
 		PriceType tmpPriceType = createPriceType("Test price type");
 		int tmpPriceTypeId = tmpPriceType.getId();
 		if (tmpPriceTypeId==0) {
@@ -181,7 +208,7 @@ public class CreateDemo {
 			System.out.println("Price type was created succesfully: " + tmpPriceType);
 		}
 		// Actual prices
-		System.out.println("Creating actual price  ...");
+		System.out.println("\nCreating actual price  ...");
 		ActualPrice tmpActualPrice = createActualPrice(tmpItemId,tmpPriceTypeId,75);
 		if (tmpActualPrice.getId()==0) {
 			throw new Exception("Price was not cteated!");
@@ -190,7 +217,7 @@ public class CreateDemo {
 			System.out.println("Price was created succesfully: " + tmpActualPrice);
 		}
 		// Price registration 
-		System.out.println("Creating price registration  ...");
+		System.out.println("\nCreating price registration  ...");
 		String theDate = "01/08/2019";
 		Date tmpDate = DateUtils.parseDate(theDate);
 		PriceReg tmpPriceReg = createPriceReg(tmpDate, 
@@ -205,4 +232,6 @@ public class CreateDemo {
 		}
 		return tmpMapObjects;
 	}
+
+	
 }
