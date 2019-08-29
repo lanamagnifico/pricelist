@@ -3,7 +3,6 @@ package com.shestakova.pricelist.demo;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.hibernate.Session;
@@ -206,11 +205,4 @@ public class CreateDemo {
 		}
 		return tmpMapObjects;
 	}
-
-
-
-
-
-
-
 }

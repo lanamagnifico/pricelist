@@ -25,7 +25,9 @@ public class Item {
 	private int id;
 	@Column(name="name")
 	private String name;
-	@OneToMany(mappedBy="item",cascade= {CascadeType.ALL})
+	@OneToMany(fetch = FetchType.LAZY,
+			mappedBy="item",
+			cascade= {CascadeType.ALL})
 	private List<ActualPrice> actualPrices;
 	
 //	@ManyToMany(fetch = FetchType.LAZY,
