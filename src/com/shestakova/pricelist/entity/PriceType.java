@@ -14,7 +14,7 @@ import javax.persistence.Table;
 
 
 @Entity
-@Table(name="price_type")
+@Table(name="price_types")
 public class PriceType {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)

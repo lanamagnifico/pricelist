@@ -17,7 +17,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="category")
+@Table(name="categories")
 public class ItemCategory {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -33,7 +33,7 @@ public class ItemCategory {
 					CascadeType.PERSIST,
 					CascadeType.REFRESH})
 	@JoinTable(
-			name = "item_category_rel",
+			name = "items_categories_rel",
 			joinColumns = @JoinColumn(name="category_id"),
 			inverseJoinColumns = @JoinColumn(name="item_id"))
 	private Set<Item> items;

@@ -1,7 +1,6 @@
 package com.shestakova.pricelist.entity;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -18,18 +17,18 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="item")
+@Table(name="items")
 public class Item {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="id")
 	private int id;
-	@Column(name="name")
-	private String name;
+	@Column(name="title")
+	private String title;
 	@OneToMany(fetch = FetchType.LAZY,
 			mappedBy="item",
 			cascade= {CascadeType.ALL})
-	private List<ActualPrice> actualPrices;
+	private Set<ActualPrice> actualPrices;
 
 	@ManyToMany(fetch = FetchType.LAZY,
 			cascade = {CascadeType.DETACH,
@@ -37,7 +36,7 @@ public class Item {
 					CascadeType.PERSIST,
 					CascadeType.REFRESH})
 	@JoinTable(
-			name = "item_category_rel",
+			name = "items_categories_rel",
 			joinColumns = @JoinColumn(name="item_id"),
 			inverseJoinColumns = @JoinColumn(name="category_id"))
 	private Set<ItemCategory> categories;
@@ -48,7 +47,7 @@ public class Item {
 
 	public Item(String name) {
 		super();
-		this.name = name;
+		this.title = name;
 	}
 
 	public int getId() {
@@ -59,19 +58,19 @@ public class Item {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public String getTitle() {
+		return title;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setTitle(String name) {
+		this.title = name;
 	}
 
-	public List<ActualPrice> getPricelist() {
+	public Set<ActualPrice> getPricelist() {
 		return actualPrices;
 	}
 
-	public void setPricelist(List<ActualPrice> pricelist) {
+	public void setPricelist(Set<ActualPrice> pricelist) {
 		this.actualPrices = pricelist;
 	}
 
@@ -84,6 +83,6 @@ public class Item {
 
 	@Override
 	public String toString() {
-		return "Item [id=" + id + ", name=" + name + "]";
+		return "Item [id=" + id + ", name=" + title + "]";
 	}
 }

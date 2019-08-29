@@ -19,7 +19,7 @@ import javax.persistence.Table;
 
 
 @Entity
-@Table(name="price_reg")
+@Table(name="price_regs")
 public class PriceReg {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
