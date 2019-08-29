@@ -28,13 +28,13 @@ public class Item {
 	@OneToMany(mappedBy="item",cascade= {CascadeType.ALL})
 	private List<ActualPrice> actualPrices;
 	
-	@ManyToMany(fetch = FetchType.LAZY,
-			cascade = {CascadeType.ALL})
-	@JoinTable(
-			 name = "item_price_registration",
-			 joinColumns=@JoinColumn(name="item_id"),
-			 inverseJoinColumns=@JoinColumn(name="price_registration_id"))
-	private List<PriceReg> priceRegistrationList;
+//	@ManyToMany(fetch = FetchType.LAZY,
+//			cascade = {CascadeType.ALL})
+//	@JoinTable(
+//			 name = "item_price_registration",
+//			 joinColumns=@JoinColumn(name="item_id"),
+//			 inverseJoinColumns=@JoinColumn(name="price_registration_id"))
+//	private List<PriceReg> priceRegistrationList;
 	
 	public Item() {
 
@@ -69,13 +69,13 @@ public class Item {
 		this.actualPrices = pricelist;
 	}
 
-	public List<PriceReg> getPriceRegistrationList() {
-		return priceRegistrationList;
-	}
-
-	public void setPriceRegistrationList(List<PriceReg> priceRegistrationList) {
-		this.priceRegistrationList = priceRegistrationList;
-	}
+//	public List<PriceReg> getPriceRegistrationList() {
+//		return priceRegistrationList;
+//	}
+//
+//	public void setPriceRegistrationList(List<PriceReg> priceRegistrationList) {
+//		this.priceRegistrationList = priceRegistrationList;
+//	}
 
 	@Override
 	public String toString() {

@@ -1,6 +1,7 @@
 package com.shestakova.pricelist.entity;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -87,7 +88,7 @@ public class PriceReg {
 
 	@Override
 	public String toString() {
-		return "PriceReg [id=" + id + ", startDate=" + startDate + ", priceType=" + priceType + ", details=" + details
+		return "PriceReg [id=" + id + ", startDate=" + startDate + ", priceType=" + priceType + ", details=" + Arrays.toString(details.toArray())
 				+ "]";
 	}
 	

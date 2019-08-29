@@ -23,7 +23,7 @@ public class PriceRegDetail {
 			CascadeType.MERGE,
 			CascadeType.PERSIST,
 			CascadeType.REFRESH})
-	@JoinColumn(name="price_reg_id", nullable = false)
+	@JoinColumn(name="price_reg_id")
 	private PriceReg priceReg;
 	
 	@OneToOne(cascade={CascadeType.DETACH,
